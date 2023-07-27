@@ -2,11 +2,15 @@
 
 namespace BárdiHomework.Controllers
 {
-    public class ReservationController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class ReservationController : ControllerBase
     {
-        public IActionResult Index()
+        [HttpGet]
+        [Route("checkReservation")]
+        public string CheckReservation()
         {
-            return View();
+            return "working";
         }
     }
 }
