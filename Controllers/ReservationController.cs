@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using BárdiHomework.Services;
+using BárdiHomework.Models;
 
 namespace BárdiHomework.Controllers
 {
@@ -6,11 +8,16 @@ namespace BárdiHomework.Controllers
     [Route("[controller]")]
     public class ReservationController : ControllerBase
     {
+        private ReservationService _reservationService;
+        public ReservationController(ReservationService service) 
+        {
+            _reservationService = service;
+        }
         [HttpGet]
         [Route("checkReservation")]
-        public string CheckReservation()
+        public async Task<IEnumerable<Reservation>> CheckReservation()
         {
-            return "working";
+            return await _reservationService.GetReservations();
         }
     }
 }
