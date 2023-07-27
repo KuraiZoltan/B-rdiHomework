@@ -5,10 +5,9 @@ namespace BárdiHomework.Services
 {
     public class SeatService
     {
-        public async Task<IEnumerable<Reservation>> GetReservations()
+        public async Task<IEnumerable<SeatData>> GetSeats()
         {
-            var Reservation = new Reservation();
-            var reservations = new List<Reservation>();
+            var seats = new List<SeatData>();
             using var connection = new MySqlConnection("Server=localhost;User ID=Zolika1022;Password=Zolika1022;Database=seats");
 
             await connection.OpenAsync();
@@ -16,17 +15,18 @@ namespace BárdiHomework.Services
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                Reservation reservation = new Reservation() 
+                SeatData seat = new SeatData() 
                 { 
-                    ReservationId = reader.GetInt32(0),
-                    ReservationStart = (DateTime)reader.GetValue(1),
-                    ReservationEnd = (DateTime)reader.GetValue(2)
+                    Id = (int)reader.GetValue(0),
+                    ReservedBy = (string)reader.GetValue(1),
+                    SeatName = (string)reader.GetValue(2),
+                    SeatStatus = (string)reader.GetValue(3),
+                    TimeOfReservation = (DateTime)reader.GetValue(4),
+                    IsPaid = (bool)reader.GetValue(5),
                 };
-                Reservation.ReservationStart = (DateTime)reader.GetValue(1);
-                Reservation.ReservationEnd = (DateTime)reader.GetValue(2);
-                reservations.Add(reservation);
+                seats.Add(seat);
             }
-            return reservations;
+            return seats;
         }
     }
 }

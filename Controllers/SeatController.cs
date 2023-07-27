@@ -14,10 +14,10 @@ namespace BárdiHomework.Controllers
             _reservationService = service;
         }
         [HttpGet]
-        [Route("checkReservation")]
-        public async Task<IEnumerable<Reservation>> CheckReservation()
+        [Route("getSeats")]
+        public async Task<IEnumerable<SeatData>> GetSeats()
         {
-            return await _reservationService.GetReservations();
+            return await _reservationService.GetSeats();
         }
     }
 }
