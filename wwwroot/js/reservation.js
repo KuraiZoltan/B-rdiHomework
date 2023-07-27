@@ -5,23 +5,22 @@ const calendar = document.querySelector("#calendar")
 let dateTime;
 let reservation = {}
 
+main()
+
 function main() {
-    
+    data = getSeatData()
+    addEventListeners()
+    console.log(data)
 }
 
-calendar.addEventListener("change", async e => {
-    dateTime = e.currentTarget.value
-    let response = await ApiGet("https://localhost:7289/Seat/getSeats")
-    console.log(response)
-})
-
-seatOne.addEventListener("click", () => {
-    reservation['seatOne'] = dateTime
-})
-
-seatTwo.addEventListener("click", () => {
-    reservation['seatTwo'] = dateTime
-})
+function addEventListeners() {
+    seatOne.addEventListener("click", () => {
+        reservation['seatOne'] = dateTime
+    })
+    seatTwo.addEventListener("click", () => {
+        reservation['seatTwo'] = dateTime
+    })
+}
 
 async function ApiGet(url) {
     let response = await fetch(url);
@@ -29,3 +28,10 @@ async function ApiGet(url) {
         return await response.json()
     }
 }
+
+async function getSeatData() {
+    let response = await ApiGet("https://localhost:7289/Seat/getSeats")
+    return response
+}
+
+
