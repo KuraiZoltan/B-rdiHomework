@@ -11,7 +11,7 @@ function main() {
 
 calendar.addEventListener("change", async e => {
     dateTime = e.currentTarget.value
-    let response = await ApiGet("https://localhost:7289/Reservation/checkReservation")
+    let response = await ApiGet("https://localhost:7289/Seat/getSeats")
     console.log(response)
 })
 
