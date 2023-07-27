@@ -11,7 +11,7 @@ namespace BárdiHomework.Services
             using var connection = new MySqlConnection("Server=localhost;User ID=Zolika1022;Password=Zolika1022;Database=seats");
 
             await connection.OpenAsync();
-            using var command = new MySqlCommand("SELECT * FROM reservations;", connection);
+            using var command = new MySqlCommand("SELECT * FROM seats;", connection);
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -19,10 +19,10 @@ namespace BárdiHomework.Services
                 { 
                     Id = (int)reader.GetValue(0),
                     ReservedBy = (string)reader.GetValue(1),
-                    SeatName = (string)reader.GetValue(2),
-                    SeatStatus = (string)reader.GetValue(3),
+                    SeatStatus = reader.GetString("status"),
+                    SeatName = reader.GetString("seat_number"),
                     TimeOfReservation = (DateTime)reader.GetValue(4),
-                    IsPaid = (bool)reader.GetValue(5),
+                    IsPaid = reader.GetBoolean("purchase_done")
                 };
                 seats.Add(seat);
             }
