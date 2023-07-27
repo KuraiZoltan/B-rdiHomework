@@ -6,10 +6,10 @@ namespace BárdiHomework.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ReservationController : ControllerBase
+    public class SeatController : ControllerBase
     {
-        private ReservationService _reservationService;
-        public ReservationController(ReservationService service) 
+        private SeatService _reservationService;
+        public SeatController(SeatService service) 
         {
             _reservationService = service;
         }

@@ -3,7 +3,7 @@ using MySqlConnector;
 
 namespace BárdiHomework.Services
 {
-    public class ReservationService
+    public class SeatService
     {
         public async Task<IEnumerable<Reservation>> GetReservations()
         {
