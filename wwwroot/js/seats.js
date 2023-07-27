@@ -2,15 +2,14 @@
 const seatTwo = document.querySelector("#seat-two")
 const calendar = document.querySelector("#calendar")
 
-let dateTime;
 let reservation = {}
 
 main()
 
-function main() {
-    data = getSeatData()
+async function main() {
+    let response = await ApiGet("https://localhost:7289/Seat/getSeats")
+    addAttributesToSeats(response)
     addEventListeners()
-    console.log(data)
 }
 
 function addEventListeners() {
@@ -22,6 +21,17 @@ function addEventListeners() {
     })
 }
 
+function addAttributesToSeats(response) {
+    for (let i = 0; i < response.length; i++) {
+        if (response[i].seatName == 'seat-1') {
+            seatOne.classList.add(response[i].seatStatus)
+        } else {
+            seatTwo.classList.add(response[i].seatStatus)
+        }
+    }
+    
+}
+
 async function ApiGet(url) {
     let response = await fetch(url);
     if (response.ok) {
@@ -29,9 +39,5 @@ async function ApiGet(url) {
     }
 }
 
-async function getSeatData() {
-    let response = await ApiGet("https://localhost:7289/Seat/getSeats")
-    return response
-}
 
 
