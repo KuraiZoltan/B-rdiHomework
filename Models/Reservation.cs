@@ -6,6 +6,7 @@ namespace BárdiHomework.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReservationId { get; set; }
-        public DateTime ReservationTime { get; set; }
+        public DateTime ReservationStart { get; set; }
+        public DateTime ReservationEnd { get; set; }
     }
 }
