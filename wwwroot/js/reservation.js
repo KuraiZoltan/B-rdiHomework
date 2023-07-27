@@ -5,9 +5,14 @@ const calendar = document.querySelector("#calendar")
 let dateTime;
 let reservation = {}
 
-calendar.addEventListener("change", e => {
+function main() {
+    
+}
+
+calendar.addEventListener("change", async e => {
     dateTime = e.currentTarget.value
-    checkForReservation();
+    let response = await ApiGet("https://localhost:7289/Reservation/checkReservation")
+    console.log(response)
 })
 
 seatOne.addEventListener("click", () => {
@@ -18,8 +23,9 @@ seatTwo.addEventListener("click", () => {
     reservation['seatTwo'] = dateTime
 })
 
-function checkForReservation() {
-    fetch('https://localhost:7289/Reservation/checkReservation')
-        .then(response => response.text())
-        .then(text => console.log(text))
+async function ApiGet(url) {
+    let response = await fetch(url);
+    if (response.ok) {
+        return await response.json()
+    }
 }
