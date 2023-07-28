@@ -1,6 +1,8 @@
 ﻿const seatOne = document.querySelector("#seat-one")
 const seatTwo = document.querySelector("#seat-two")
 const calendar = document.querySelector("#calendar")
+const summary = document.querySelector(".summary")
+const reserveBtn = document.querySelector("#reserve-btn")
 
 let reservation = {}
 
@@ -14,10 +16,19 @@ async function main() {
 
 function addEventListeners() {
     seatOne.addEventListener("click", () => {
-        reservation['seatOne'] = dateTime
+        reservation["seat-1"] = 'occupied'
+        let pTag = document.createElement("p")
+        pTag.innerHTML = "Seat one"
+        summary.appendChild(pTag)
     })
     seatTwo.addEventListener("click", () => {
-        reservation['seatTwo'] = dateTime
+        reservation["seat-2"] = 'occupied'
+        let pTag = document.createElement("p")
+        pTag.innerHTML = "Seat two"
+        summary.appendChild(pTag)
+    })
+    reserveBtn.addEventListener("click", async () => {
+        await ApiPost("https://localhost:7289/Seat/reserveSeats", reservation)
     })
 }
 
@@ -39,5 +50,14 @@ async function ApiGet(url) {
     }
 }
 
-
+async function ApiPost(url, payload) {
+    let data = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+    return await data.json()
+}
 

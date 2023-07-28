@@ -1,11 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<h1>Reservation</h1>
+﻿<h1>Reservation</h1>
 <div class="text-center">
     <div class="seat" id="seat-one"></div>
     <div class="seat" id="seat-two"></div>
 </div>
-<input type="datetime-local" id="calendar"/>
-<script src="~/js/seats.js"></script>
+<div class="summary">
+    <h3>Reser to seats:</h3>
+</div>
+<button class="btn btn-primary" id="reserve-btn">Reserve</button>
+<script src="~/js/seatsController.js"></script>
