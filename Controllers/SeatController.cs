@@ -12,11 +12,13 @@ namespace BárdiHomework.Controllers
         private SeatService _seatService;
         private ReservationService _reservationService;
         private PaymentService _paymentService;
-        public SeatController(SeatService seatService, ReservationService reservationService, PaymentService paymentService) 
+        private EmailService _emailService;
+        public SeatController(SeatService seatService, ReservationService reservationService, PaymentService paymentService, EmailService emailService) 
         {
             _seatService = seatService;
             _reservationService = reservationService;
             _paymentService = paymentService;
+            _emailService = emailService;
         }
         [HttpGet]
         [Route("getSeats")]
@@ -30,13 +32,16 @@ namespace BárdiHomework.Controllers
         public async Task<IActionResult> ReserveSeats([FromBody] Dictionary<string, string> seatNumbers)
         {
             var seats = await _seatService.GetSeatsBySeatName(seatNumbers);
-
             foreach (var seat in seats)
             {
                 if (seat.SeatStatus == "free")
                 {
                     await _reservationService.InitiateReservation(seat);
-                    return Ok(seats);
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(120000);
+                        await _reservationService.ValidatePayment(seat);
+                    });
                 }
                 else
                 {
@@ -48,13 +53,23 @@ namespace BárdiHomework.Controllers
 
         [HttpPost]
         [Route("payForSeats")]
-        public async Task PayForSeats([FromBody] Dictionary<string, string> seatNumbers, string payedBy)
+        public async Task<IActionResult> PayForSeats([FromBody] PaymentForm paymentForm)
         {
-            var seats = await _seatService.GetSeatsBySeatName(seatNumbers);
+            var seats = await _seatService.GetSeatsBySeatName(paymentForm.Seats);
             foreach (var seat in seats)
             {
-                await _paymentService.PayForSeat(seat, payedBy);
+                if (seat.SeatStatus != "free")
+                {
+                    await _paymentService.PayForSeat(seat, paymentForm.Email);
+                    _emailService.SendConfirmationEmail(paymentForm);
+                }
+                else
+                {
+                    return BadRequest("Reservation has expired");
+                }
+
             }
+            return Ok();
         }
     }
 }
