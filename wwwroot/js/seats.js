@@ -2,6 +2,7 @@
 const seatTwo = document.querySelector("#seat-two")
 const calendar = document.querySelector("#calendar")
 const summary = document.querySelector(".summary")
+const paymentContainer = document.querySelector(".payment")
 const reserveBtn = document.querySelector("#reserve-btn")
 
 let reservation = {}
@@ -28,7 +29,43 @@ function addEventListeners() {
         summary.appendChild(pTag)
     })
     reserveBtn.addEventListener("click", async () => {
-        await ApiPost("https://localhost:7289/Seat/reserveSeats", reservation)
+        let response = await ApiPost("https://localhost:7289/Seat/reserveSeats", reservation)
+        if (response.ok) {
+            let payment = document.createElement("div")
+            let paymentText = document.createElement("p")
+            let paymentTitle = document.createElement("h3")
+            let label = document.createElement("label")
+            let input = document.createElement("input")
+            let paymentButton = document.createElement("button")
+
+            paymentButton.innerHTML = "Submit"
+            paymentButton.classList.add("btn")
+            paymentButton.classList.add("btn-primary")
+            paymentTitle.innerHTML = "Payment"
+            input.type = "email"
+            label.innerHTML = "Email"
+            paymentText.innerHTML = `For seat(s): ${reservation} give your email address!`
+
+            label.appendChild(input)
+
+            payment.appendChild(paymentTitle)
+            payment.appendChild(paymentText)
+            payment.appendChild(label)
+            payment.appendChild(paymentButton)
+
+            paymentContainer.appendChild(payment)
+
+            paymentButton.addEventListener("click", async () => {
+                payload = {
+                    Seats: reservation,
+                    Email: input.value
+                }
+                await ApiPost("https://localhost:7289/Seat/payForSeats", payload)
+            })
+        } else {
+            alert("Seat(s) are now available!")
+        }
+        
     })
 }
 
@@ -51,13 +88,13 @@ async function ApiGet(url) {
 }
 
 async function ApiPost(url, payload) {
-    let data = await fetch(url, {
+    let response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
     })
-    return await data.json()
+    return await response
 }
 
