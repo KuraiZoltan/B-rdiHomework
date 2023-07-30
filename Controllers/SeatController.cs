@@ -32,7 +32,7 @@ namespace BárdiHomework.Controllers
             {
                 if (seat.SeatStatus == "free")
                 {
-                    _reservationService.InitiateReservation(seat);
+                    await _reservationService.InitiateReservation(seat);
                 }
             }
             return Ok(seats);
