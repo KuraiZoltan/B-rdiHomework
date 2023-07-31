@@ -2,7 +2,7 @@
 {
     public class PaymentForm
     {
-        public Dictionary<string, string> Seats { get; set; }
+        public Dictionary<string, int> Seats { get; set; }
         public string Email { get; set; }
     }
 }
