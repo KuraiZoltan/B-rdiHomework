@@ -1,6 +1,5 @@
 ﻿using BárdiHomework.Models;
 using MySqlConnector;
-using System.Threading;
 
 namespace BárdiHomework.Services
 {
