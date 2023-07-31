@@ -1,7 +1,5 @@
 ﻿using BárdiHomework.Models;
-using Microsoft.Extensions.Configuration;
 using MySqlConnector;
-using System.Configuration;
 
 namespace BárdiHomework.Services
 {
