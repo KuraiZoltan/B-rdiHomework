@@ -6,13 +6,15 @@ namespace BárdiHomework.Services
 {
     public class ReservationService
     {
-        public async Task InitiateReservation(SeatData seat)
+        public async Task<bool> InitiateReservation(SeatData seat, Dictionary<string, int> seatNumbers)
         {
             using var connection = new MySqlConnection("Server=localhost;User ID=Zolika1022;Password=Zolika1022;Database=seats");
             await connection.OpenAsync();
-            using var command = new MySqlCommand("UPDATE seats SET status='reserved', reservation_time=CURRENT_TIMESTAMP WHERE id=@seats.id;", connection);
+            using var command = new MySqlCommand("UPDATE seats SET status='reserved', reservation_time=CURRENT_TIMESTAMP, version=version+1 WHERE id=@seats.id AND version=@version;", connection);
             command.Parameters.AddWithValue("@seats.id", seat.Id);
-            await command.ExecuteNonQueryAsync();
+            command.Parameters.AddWithValue("@version", seatNumbers[$"{seat.SeatName}"]);
+            var output = await command.ExecuteNonQueryAsync();
+            return output == 1;
         }
 
         public async Task ValidatePayment(SeatData seat)
