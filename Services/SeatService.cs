@@ -22,14 +22,15 @@ namespace BárdiHomework.Services
                     SeatStatus = reader.GetString("status"),
                     SeatName = reader.GetString("seat_number"),
                     TimeOfReservation = (DateTime)reader.GetValue(4),
-                    IsPaid = reader.GetBoolean("purchase_done")
+                    IsPaid = reader.GetBoolean("purchase_done"),
+                    Version = reader.GetInt32("version")
                 };
                 seats.Add(seat);
             }
             return seats;
         }
 
-        public async Task<IEnumerable<SeatData>> GetSeatsBySeatName(Dictionary<string, string> seatNumbers)
+        public async Task<IEnumerable<SeatData>> GetSeatsBySeatName(Dictionary<string, int> seatNumbers)
         {
             var seats = new List<SeatData>();
             using var connection = new MySqlConnection("Server=localhost;User ID=Zolika1022;Password=Zolika1022;Database=seats");
@@ -48,7 +49,8 @@ namespace BárdiHomework.Services
                         SeatStatus = reader.GetString("status"),
                         SeatName = reader.GetString("seat_number"),
                         TimeOfReservation = (DateTime)reader.GetValue(4),
-                        IsPaid = reader.GetBoolean("purchase_done")
+                        IsPaid = reader.GetBoolean("purchase_done"),
+                        Version = reader.GetInt32("version")
                     };
                     seats.Add(seat);
                 }
