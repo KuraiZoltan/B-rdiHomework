@@ -63,7 +63,7 @@ function addEventListeners() {
                 await ApiPost("https://localhost:7289/Seat/payForSeats", payload)
             })
         } else {
-            alert("Seat(s) are now available!")
+            alert("Seat(s) are not available!")
         }
         
     })
