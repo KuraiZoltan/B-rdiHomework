@@ -17,13 +17,13 @@ async function main() {
 
 function addEventListeners() {
     seatOne.addEventListener("click", () => {
-        reservation["seat-1"] = 'occupied'
+        reservation["seat-1"] = parseInt(seatOne.dataset.seatVersion)
         let pTag = document.createElement("p")
         pTag.innerHTML = "Seat one"
         summary.appendChild(pTag)
     })
     seatTwo.addEventListener("click", () => {
-        reservation["seat-2"] = 'occupied'
+        reservation["seat-2"] = parseInt(seatTwo.dataset.seatVersion)
         let pTag = document.createElement("p")
         pTag.innerHTML = "Seat two"
         summary.appendChild(pTag)
@@ -73,8 +73,10 @@ function addAttributesToSeats(response) {
     for (let i = 0; i < response.length; i++) {
         if (response[i].seatName == 'seat-1') {
             seatOne.classList.add(response[i].seatStatus)
+            seatOne.dataset.seatVersion = `${response[i].version}`
         } else {
             seatTwo.classList.add(response[i].seatStatus)
+            seatTwo.dataset.seatVersion = `${response[i].version}`
         }
     }
     
