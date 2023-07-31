@@ -8,5 +8,6 @@
         public string SeatStatus { get; set; }
         public DateTime TimeOfReservation { get; set; }
         public Boolean IsPaid { get; set; }
+        public int Version { get; set; }
     }
 }
