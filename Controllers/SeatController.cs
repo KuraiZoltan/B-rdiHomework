@@ -29,14 +29,19 @@ namespace BárdiHomework.Controllers
 
         [HttpPost]
         [Route("reserveSeats")]
-        public async Task<IActionResult> ReserveSeats([FromBody] Dictionary<string, string> seatNumbers)
+        public async Task<IActionResult> ReserveSeats([FromBody] Dictionary<string, int> seatNumbers)
         {
             var seats = await _seatService.GetSeatsBySeatName(seatNumbers);
+            bool output = false;
             foreach (var seat in seats)
             {
                 if (seat.SeatStatus == "free")
                 {
-                    await _reservationService.InitiateReservation(seat);
+                    output = await _reservationService.InitiateReservation(seat, seatNumbers);
+                    if (!output)
+                    {
+                        break;
+                    }
                     Task.Run(async () =>
                     {
                         await Task.Delay(120000);
@@ -48,7 +53,14 @@ namespace BárdiHomework.Controllers
                     return BadRequest("The seat(s) are already occupied.");
                 }
             }
-            return Ok();
+            if (output)
+            {
+                return Ok();
+            } 
+            else
+            {
+                return BadRequest("Someone has already reserved the seat(s).");
+            }
         }
 
         [HttpPost]
